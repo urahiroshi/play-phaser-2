@@ -9,7 +9,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "phaser": "^3.18.1",
+    "phaser": "^3.50.0",
     "webpack": "^4.35.2",
     "webpack-cli": "^3.3.5"
   },
@@ -17,7 +17,6 @@
     "@types/node": "^12.7.4",
     "live-server": "^1.2.1",
     "ts-loader": "^6.0.4",
-    "typescript": "^3.5.2",
-    "yarn": "^1.16.0"
+    "typescript": "^3.5.2"
   }
 }

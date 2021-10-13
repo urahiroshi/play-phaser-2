@@ -29,7 +29,13 @@ export class Player implements Objects{
     this.scene = scene
     this.pos = getTileToPos(tilePos)
     this.tilePos = tilePos
-    this.moveKey = getMoveKeyboard(this.scene, 's', 'w', 'a', 'd')
+    this.moveKey = getMoveKeyboard(
+      this.scene,
+      Phaser.Input.Keyboard.KeyCodes.DOWN,
+      Phaser.Input.Keyboard.KeyCodes.UP,
+      Phaser.Input.Keyboard.KeyCodes.LEFT,
+      Phaser.Input.Keyboard.KeyCodes.RIGHT,
+    )
     this.moveState = { x: 0, y: 0 }
     this.animState = ''
     this.isMoving = false
@@ -44,9 +50,7 @@ export class Player implements Objects{
     this.player.setOrigin(0)
 
     for(let a of this.anims){
-      if(this.scene.anims.create(this.animConfig(a)) === false) continue
-        
-      this.player.anims.load(a.key)
+      if(this.player.anims.create(this.animConfig(a)) === false) continue
     }
   }
 

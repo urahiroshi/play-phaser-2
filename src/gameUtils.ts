@@ -13,12 +13,12 @@ export function addSprite(scene: Phaser.Scene, pos: Vector2, texture: string, fr
   return scene.add.sprite(pos.x, pos.y, texture, frame)
 }
 
-export function getMoveKeyboard(scene: Phaser.Scene, front: string, back: string, left: string, right: string): MoveKeyboard{
+export function getMoveKeyboard(scene: Phaser.Scene, front: number, back: number, left: number, right: number): MoveKeyboard{
   return {
-    front: scene.input.keyboard.addKey(front[0]),
-    back: scene.input.keyboard.addKey(back[0]),
-    left: scene.input.keyboard.addKey(left[0]),
-    right: scene.input.keyboard.addKey(right[0]),
+    front: scene.input.keyboard.addKey(front),
+    back: scene.input.keyboard.addKey(back),
+    left: scene.input.keyboard.addKey(left),
+    right: scene.input.keyboard.addKey(right),
   }
 }
 

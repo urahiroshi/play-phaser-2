@@ -8,6 +8,9 @@ class Main extends Phaser.Game {
       width: 480,
       height: 320,
       backgroundColor: '#eee',
+      physics: {
+        default: 'arcade',
+      },
     };
     super(config);
 

@@ -1,21 +1,17 @@
 import * as Phaser from "phaser";
-import { Preload } from "./scenes/preload";
-import { Game } from "./scenes/game";
-import { GameFrame } from "./gameParameters";
-
+import { Game } from "./game";
 
 class Main extends Phaser.Game {
   constructor() {
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.WEBGL,
-      width: GameFrame.w,
-      height: GameFrame.h
+      width: 480,
+      height: 320,
     };
     super(config);
 
-    this.scene.add("preload", Preload, false);
     this.scene.add("game", Game, false);
-    this.scene.start("preload");
+    this.scene.start("game");
   }
 }
 

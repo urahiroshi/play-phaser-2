@@ -7,6 +7,7 @@ class Main extends Phaser.Game {
       type: Phaser.WEBGL,
       width: 480,
       height: 320,
+      backgroundColor: '#eee',
     };
     super(config);
 

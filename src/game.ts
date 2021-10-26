@@ -1,15 +1,20 @@
 import * as Phaser from "phaser"
 
 export class Game extends Phaser.Scene {
-  public init(){
+  private ball: Phaser.GameObjects.Sprite;
+
+  public init() { }
+
+  public preload() {
+    this.load.image('ball', '../assets/ball.png');
   }
 
-  public preload(){
+  public create() {
+    this.ball = this.add.sprite(50, 50, 'ball');
   }
 
-  public create(){
-  }
-
-  public update(){
+  public update() {
+    this.ball.x += 1;
+    this.ball.y += 1;
   }
 }

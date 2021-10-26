@@ -4,8 +4,12 @@ export class Game extends Phaser.Scene {
   private balls: Phaser.Physics.Arcade.Group;
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
   private rectangle: Phaser.Geom.Rectangle;
+  private isGameOver: boolean;
+  private cursorKeys: Phaser.Types.Input.Keyboard.CursorKeys;
 
-  public init() { }
+  public init() {
+    this.isGameOver = false;
+  }
 
   public preload() {
     this.load.setBaseURL('../assets');
@@ -32,6 +36,8 @@ export class Game extends Phaser.Scene {
       delay: 100,
       loop: true,
     });
+
+    this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
 
   public onCreateBall() {
@@ -40,8 +46,14 @@ export class Game extends Phaser.Scene {
   }
 
   public update() {
-    this.player.x = this.game.input.mousePointer.x || this.sys.game.canvas.width * 0.5;
-    if (this.physics.collide(this.balls, this.player)) {
+    if (this.cursorKeys.left.isDown) {
+      this.player.x -= 2;
+    } else if (this.cursorKeys.right.isDown) {
+      this.player.x += 2;
+    }
+    // this.player.x = this.game.input.mousePointer.x || this.sys.game.canvas.width * 0.5;
+    if (!this.isGameOver && this.physics.collide(this.balls, this.player)) {
+      this.isGameOver = true;
       alert('game over');
       location.reload();
     }

@@ -1,8 +1,9 @@
 import * as Phaser from "phaser"
 
 export class Game extends Phaser.Scene {
-  private balls: Phaser.Types.Physics.Arcade.Group;
+  private balls: Phaser.Physics.Arcade.Group;
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
+  private rectangle: Phaser.Geom.Rectangle;
 
   public init() { }
 
@@ -14,17 +15,28 @@ export class Game extends Phaser.Scene {
 
   public create() {
     const { width, height } = this.sys.game.canvas;
+    this.rectangle = new Phaser.Geom.Rectangle(0, 0, width, 0);
 
     this.balls = this.physics.add.group({
-      key: 'ball',
-      frameQuantity: 10,
       velocityX: 0,
       velocityY: 100,
     });
-    Phaser.Actions.RandomRectangle(this.balls.getChildren(), new Phaser.Geom.Rectangle(0, 0, width, 0));
+    Phaser.Actions.RandomRectangle(this.balls.getChildren(), this.rectangle);
 
     this.player = this.physics.add.sprite(width * 0.5, height - 10, 'square');
     this.player.body.immovable = true;
+
+    this.time.addEvent({
+      callback: this.onCreateBall,
+      callbackScope: this,
+      delay: 100,
+      loop: true,
+    });
+  }
+
+  public onCreateBall() {
+    const randomPoint = this.rectangle.getRandomPoint();
+    this.balls.create(randomPoint.x, randomPoint.y, 'ball');
   }
 
   public update() {

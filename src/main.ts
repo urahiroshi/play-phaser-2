@@ -5,9 +5,9 @@ class Main extends Phaser.Game {
   constructor() {
     const config: Phaser.Types.Core.GameConfig = {
       type: Phaser.WEBGL,
-      width: 480,
-      height: 320,
-      backgroundColor: '#eee',
+      width: 800,
+      height: 600,
+      backgroundColor: '#222',
       physics: {
         default: 'arcade',
       },

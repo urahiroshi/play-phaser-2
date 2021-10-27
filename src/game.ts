@@ -1,5 +1,13 @@
 import * as Phaser from "phaser"
 
+let isGameOver = false;
+const gameOver = () => {
+  if (!isGameOver) {
+    isGameOver = true;
+    alert('game over');
+    location.reload();
+  }
+}
 export class Game extends Phaser.Scene {
   private balls: Phaser.Physics.Arcade.Group;
   private player: Phaser.Types.Physics.Arcade.SpriteWithDynamicBody;
@@ -13,8 +21,9 @@ export class Game extends Phaser.Scene {
 
   public preload() {
     this.load.setBaseURL('../assets');
-    this.load.image('ball', 'ball.png');
-    this.load.image('square', 'square.png');
+    this.load.image('circle_blue', 'circle_blue.png');
+    this.load.image('circle_green', 'circle_green.png');
+    this.load.image('square', 'square10x.png');
   }
 
   public create() {
@@ -27,22 +36,50 @@ export class Game extends Phaser.Scene {
     });
     Phaser.Actions.RandomRectangle(this.balls.getChildren(), this.rectangle);
 
-    this.player = this.physics.add.sprite(width * 0.5, height - 10, 'square');
+    this.player = this.physics.add.sprite(width * 0.5, height - 5, 'square');
     this.player.body.immovable = true;
 
     this.time.addEvent({
-      callback: this.onCreateBall,
+      callback: this.createGreenCircle,
       callbackScope: this,
       delay: 100,
       loop: true,
     });
 
+    this.time.addEvent({
+      callback: this.createBlueCircle,
+      callbackScope: this,
+      delay: 1000,
+      loop: true,
+    });
+
+    this.physics.add.collider(this.player, this.balls, gameOver);
+
+    // this.physics.world.on('collide', () => {
+    //   this.isGameOver = true;
+    //   alert('game over');
+    //   location.reload();
+    // });
+
     this.cursorKeys = this.input.keyboard.createCursorKeys();
   }
 
-  public onCreateBall() {
+  private createGreenCircle() {
     const randomPoint = this.rectangle.getRandomPoint();
-    this.balls.create(randomPoint.x, randomPoint.y, 'ball');
+    const circle = this.balls.create(randomPoint.x, randomPoint.y, 'circle_green');
+    circle.setVelocityX = 0;
+    circle.setVelocityY = 100;
+  }
+
+  private createBlueCircle() {
+    const randomPoint = this.rectangle.getRandomPoint();
+    const length = 7;
+    for (let i=0; i<length; i++) {
+      const circle = this.physics.add.sprite(randomPoint.x, randomPoint.y, 'circle_blue');
+      const angle = Math.PI * (i / (length - 1));
+      circle.setVelocity(Math.cos(angle) * 150, Math.sin(angle) * 150);
+      this.physics.add.collider(this.player, circle, gameOver);
+    }
   }
 
   public update() {
@@ -51,11 +88,15 @@ export class Game extends Phaser.Scene {
     } else if (this.cursorKeys.right.isDown) {
       this.player.x += 2;
     }
-    // this.player.x = this.game.input.mousePointer.x || this.sys.game.canvas.width * 0.5;
-    if (!this.isGameOver && this.physics.collide(this.balls, this.player)) {
-      this.isGameOver = true;
-      alert('game over');
-      location.reload();
+    if (this.cursorKeys.up.isDown) {
+      this.player.y -= 2;
+    } else if (this.cursorKeys.down.isDown) {
+      this.player.y += 2;
     }
+    // if (!this.isGameOver && this.physics.collide(this.balls, this.player)) {
+    //   this.isGameOver = true;
+    //   alert('game over');
+    //   location.reload();
+    // }
   }
 }
